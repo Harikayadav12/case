@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: currencyconverter-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: currencyconverter
+  template:
+    metadata:
+      labels:
+        app: currencyconverter
+    spec:
+      containers:
+        - name: currencyconverter
+          image: harikayadav/currencyconverter:latest
+          ports:
+            - containerPort: 5000

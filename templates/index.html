@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Currency Converter</title>
+    <style>
+        body { font-family: Arial; text-align: center; margin-top: 50px; }
+        input, select, button { padding: 8px; margin: 10px; border-radius: 5px; }
+        button { background-color: #4CAF50; color: white; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+    <h1>Currency Converter (INR to Other)</h1>
+    <form method="POST" action="/convert">
+        <input type="number" name="amount" placeholder="Amount in INR" required>
+        <select name="currency">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="JPY">JPY</option>
+            <option value="GBP">GBP</option>
+            <option value="AUD">AUD</option>
+        </select>
+        <button type="submit">Convert</button>
+    </form>
+</body>
+</html>
