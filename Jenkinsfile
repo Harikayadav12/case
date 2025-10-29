@@ -1,46 +1,44 @@
-pipeline {
+pipeline {pipeline {
     agent any
+
+    environment {
+        // Path to your kubeconfig for kubectl
+        KUBECONFIG = "C:\\Users\\harikayadav\\.kube\\config"
+    }
 
     stages {
 
-        stage('Build Docker Image') {
+        stage('Build') {
             steps {
-                echo "Building Docker Image..."
-                bat "docker build -t harikayadav/currencyconverter:v1 ."
+                echo 'Building the application...'
+                // Example: if using Maven
+                bat 'mvn clean package'
             }
         }
 
-        stage('Docker Login') {
+        stage('Test') {
             steps {
-                echo "Logging in to Docker Hub..."
-                bat 'docker login -u harikayadav -p 22251a1245'
-            }
-        }
-
-        stage('Push Docker Image to Docker Hub') {
-            steps {
-                echo "Pushing Docker Image to Docker Hub..."
-                bat "docker tag harikayadav/currencyconverter:v1 harikayadav/currencyconverter:latest"
-                bat "docker push harikayadav/currencyconverter:latest"
+                echo 'Running unit tests...'
+                // Example: run test command
+                bat 'mvn test'
             }
         }
 
         stage('Deploy to Kubernetes') {
-    echo 'Deploying to Kubernetes...'
-    withEnv(["KUBECONFIG=C:\\Users\\<harikayadav>\\.kube\\config"]) {
-        bat 'kubectl apply -f deployment.yaml --validate=false'
-    }
-}
-
-
+            steps {
+                echo 'Deploying to Kubernetes...'
+                // Make sure deployment.yaml is in workspace
+                bat 'kubectl apply -f deployment.yaml --validate=false'
+            }
+        }
     }
 
     post {
         success {
-            echo '✅ Deployment Successful!'
+            echo 'Pipeline completed successfully!'
         }
         failure {
-            echo '❌ Deployment Failed!'
+            echo 'Pipeline failed. Check the logs!'
         }
     }
 }
