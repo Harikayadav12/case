@@ -26,12 +26,12 @@ pipeline {
         }
 
         stage('Deploy to Kubernetes') {
-            steps {
-                echo "Deploying to Kubernetes..."
-                bat 'kubectl apply -f deployment.yaml --validate=false'
-                bat 'kubectl apply -f service.yaml'
-            }
-        }
+    echo 'Deploying to Kubernetes...'
+    withEnv(["KUBECONFIG=C:\\ProgramData\\Jenkins\\.kube\\config"]) {
+        bat 'kubectl apply -f deployment.yaml --validate=false'
+    }
+}
+
     }
 
     post {
@@ -43,3 +43,4 @@ pipeline {
         }
     }
 }
+
