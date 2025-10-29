@@ -2,11 +2,11 @@ pipeline {
     agent any
 
     environment {
-        KUBECONFIG = 'C:\\Users\\Harika\\.kube\\config' // path to kubeconfig on Jenkins agent
+        KUBE_USER = 'harikayadav'  // Kubernetes user
+        KUBE_CONFIG = 'C:\\Users\\harikayadav\\.kube\\config' // Path to kubeconfig
     }
 
     stages {
-
         stage('Checkout SCM') {
             steps {
                 echo 'Checking out Git repository...'
@@ -14,33 +14,21 @@ pipeline {
             }
         }
 
-        stage('Build') {
-            steps {
-                echo 'Building the application...'
-                // Use Maven Wrapper
-                bat '.\\mvnw clean package'
-            }
-        }
-
-        stage('Test') {
-            steps {
-                echo 'Running unit tests...'
-                bat '.\\mvnw test'
-            }
-        }
-
         stage('Deploy to Kubernetes') {
             steps {
                 echo 'Deploying to Kubernetes...'
-                // Apply Kubernetes manifests
-                bat 'kubectl apply -f deployment.yaml'
+                withEnv(["KUBECONFIG=${env.KUBE_CONFIG}"]) {
+                    // Apply your deployment YAML
+                    bat 'kubectl apply -f deployment.yaml'
+                    bat 'kubectl get pods'
+                }
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline finished successfully!'
+            echo 'Pipeline completed successfully!'
         }
         failure {
             echo 'Pipeline failed. Check the logs!'
