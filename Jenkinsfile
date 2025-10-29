@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        KUBE_USER = 'harikayadav'  // Kubernetes user
-        KUBE_CONFIG = 'C:\\Users\\harikayadav\\.kube\\config' // Path to kubeconfig
+        KUBE_USER = 'harikayadav'
+        KUBE_CONFIG = 'C:\\Users\\harikayadav\\.kube\\config' // Update path
     }
 
     stages {
@@ -18,7 +18,6 @@ pipeline {
             steps {
                 echo 'Deploying to Kubernetes...'
                 withEnv(["KUBECONFIG=${env.KUBE_CONFIG}"]) {
-                    // Apply your deployment YAML
                     bat 'kubectl apply -f deployment.yaml'
                     bat 'kubectl get pods'
                 }
