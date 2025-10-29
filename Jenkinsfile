@@ -26,11 +26,13 @@ pipeline {
         }
 
         stage('Deploy to Kubernetes') {
-    echo 'Deploying to Kubernetes...'
-    withEnv(["KUBECONFIG=C:\\ProgramData\\Jenkins\\.kube\\config"]) {
-        bat 'kubectl apply -f deployment.yaml --validate=false'
-    }
-}
+            steps { // ✅ Add this block
+                echo 'Deploying to Kubernetes...'
+                withEnv(["KUBECONFIG=C:\\ProgramData\\Jenkins\\.kube\\config"]) {
+                    bat 'kubectl apply -f deployment.yaml --validate=false'
+                }
+            }
+        }
 
     }
 
