@@ -1,4 +1,4 @@
-pipeline {pipeline {
+pipeline {
     agent any
 
     environment {
@@ -31,7 +31,7 @@ pipeline {pipeline {
                 bat 'kubectl apply -f deployment.yaml --validate=false'
             }
         }
-    }
+    } // end of stages
 
     post {
         success {
@@ -41,6 +41,4 @@ pipeline {pipeline {
             echo 'Pipeline failed. Check the logs!'
         }
     }
-}
-
-
+} // end of pipeline
