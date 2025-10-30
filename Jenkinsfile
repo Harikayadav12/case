@@ -5,7 +5,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo "Building Docker Image..."
-                bat 'docker build -t harikayadav/currencyconverter:latest .'
+                bat 'docker build -t harikayadav/case-study:latest .'
             }
         }
 
@@ -19,7 +19,7 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 echo "Pushing image to Docker Hub..."
-                bat 'docker push harikayadav/currencyconverter:latest'
+                bat 'docker push harikayadav/case-study:latest'
             }
         }
 
@@ -41,4 +41,5 @@ pipeline {
         }
     }
 }
+
 
