@@ -1,36 +1,43 @@
 pipeline {
     agent any
 
-    environment {
-        KUBE_USER = 'harikayadav'
-        KUBE_CONFIG = 'C:\\Users\\harikayadav\\.kube\\config' // Update path
-    }
-
     stages {
-        stage('Checkout SCM') {
+        stage('Build Docker Image') {
             steps {
-                echo 'Checking out Git repository...'
-                git branch: 'main', url: 'https://github.com/Harikayadav12/case.git'
+                echo "Building Docker Image..."
+                bat 'docker build -t harikayadav/currencyconverter:latest .'
+            }
+        }
+
+        stage('Docker Login') {
+            steps {
+                echo "Logging into Docker Hub..."
+                bat 'docker login -u harikayadav -p 22251a1245'
+            }
+        }
+
+        stage('Push Docker Image') {
+            steps {
+                echo "Pushing image to Docker Hub..."
+                bat 'docker push harikayadav/currencyconverter:latest'
             }
         }
 
         stage('Deploy to Kubernetes') {
             steps {
-                echo 'Deploying to Kubernetes...'
-                withEnv(["KUBECONFIG=${env.KUBE_CONFIG}"]) {
-                    bat 'kubectl apply -f deployment.yaml'
-                    bat 'kubectl get pods'
-                }
+                echo "Deploying to Kubernetes..."
+                bat 'kubectl apply -f deployment.yaml --validate=false'
+                bat 'kubectl apply -f service.yaml'
             }
         }
     }
 
     post {
         success {
-            echo 'Pipeline completed successfully!'
+            echo "✅ Library Management System successfully deployed!"
         }
         failure {
-            echo 'Pipeline failed. Check the logs!'
+            echo "❌ Pipeline failed. Check Jenkins logs."
         }
     }
 }
