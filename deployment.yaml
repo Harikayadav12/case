@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
         - name: currencyconverter
-          image: harikayadav/case-study:latest
+          image: harikayadav/converter:latest
           ports:
             - containerPort: 5000
+
 
