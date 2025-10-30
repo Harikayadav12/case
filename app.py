@@ -24,4 +24,6 @@ def convert():
     return render_template('result.html', amount=amount_inr, currency=currency, converted=converted_amount)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
+
+
